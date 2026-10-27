@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>跟着一条命令认识 SPACE</title>
+<style>
+:root{--bg:#f6f7fa;--paper:#fff;--ink:#233149;--muted:#67758a;--line:#d8e0ec;--blue:#2463eb;--soft:#edf3ff;--green:#21755b}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif}button{font:inherit;cursor:pointer}button:focus-visible,summary:focus-visible{outline:3px solid #d49a28;outline-offset:4px}.page{max-width:1040px;margin:auto;padding:30px 24px}header{display:flex;align-items:center;justify-content:space-between;gap:15px}h1{font-size:24px;line-height:1.4;margin:0}.demo{font-size:12px;color:var(--muted);white-space:nowrap}.intro{margin:7px 0 23px;color:var(--muted);font-size:14px}.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.phase{border:1px solid var(--line);border-radius:9px;background:transparent;padding:10px 6px;color:var(--muted)}.phase[aria-current=step]{background:var(--soft);color:var(--blue);border-color:#9bb8ef}.phase span{display:inline-block;margin-right:7px}.headline{margin:25px 0 0;text-align:center}.count{font-size:12px;color:var(--muted)}h2{margin:5px 0 0;font-size:25px;line-height:1.5}.subtitle{font-size:15px;color:var(--muted);margin:5px auto 0;min-height:29px}.scene{margin-top:26px;display:grid;grid-template-columns:minmax(0,1fr) 90px minmax(0,1fr) 90px minmax(0,1fr);align-items:center;min-height:245px}.actor{text-align:center;min-width:0}.picture{height:153px;position:relative;display:flex;align-items:center;justify-content:center}.actor-label{font-weight:650;margin:13px 0 0}.actor-desc{font-size:13px;color:var(--muted);min-height:24px;margin:2px 0 0}.monitor{width:190px;max-width:100%;height:133px;border:2px solid #b7c5da;border-radius:10px;background:var(--paper);position:relative;padding:10px;text-align:left;box-shadow:0 6px 0 #e1e6ef}.monitor:before{content:'';position:absolute;left:calc(50% - 2px);bottom:-16px;width:4px;height:13px;background:#b7c5da}.monitor:after{content:'';position:absolute;left:calc(50% - 25px);bottom:-19px;width:50px;height:4px;border-radius:5px;background:#b7c5da}.screen-title{font-size:11px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:7px}.screen-line{font:12px/1.8 ui-monospace,Consolas,monospace;overflow-wrap:anywhere}.client-note{background:var(--soft);border-radius:5px;padding:4px 7px;margin-top:5px;font-size:11px;color:var(--blue)}.platform{width:150px;height:132px;border:2px solid #b7c5da;border-radius:13px;background:var(--paper);display:flex;flex-direction:column;justify-content:center;align-items:center}.platform-name{font-size:24px;font-weight:650;letter-spacing:.04em}.platform-role{font-size:12px;color:var(--muted);margin-top:8px}.platform.active{border-color:var(--blue);background:var(--soft)}.sandbox{transition:opacity .3s,border-color .3s}.sandbox.empty{border-style:dashed;opacity:.45;box-shadow:none}.sandbox.alive{border-color:var(--green)}.sandbox.off{opacity:.55}.vm-label{font-size:11px;color:var(--green)}.process{margin-top:7px;padding:4px 7px;border-radius:4px;background:#f0f4f8;font-size:12px;min-height:26px;overflow-wrap:anywhere}.process.running{background:#e7f5ee;color:var(--green)}.ghost-label{font-size:15px;text-align:center;padding-top:15px;color:var(--muted)}.flow{height:80px;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--muted);gap:4px}.flow-label{font-size:12px;text-align:center;min-height:21px;white-space:nowrap}.track{width:100%;height:2px;background:var(--line);position:relative}.track:after{content:'';position:absolute;right:0;top:-4px;border-left:8px solid var(--line);border-top:5px solid transparent;border-bottom:5px solid transparent}.flow.reverse .track:after{right:auto;left:0;transform:rotate(180deg)}.flow.active{color:var(--blue)}.flow.active .track{background:var(--blue)}.flow.active .track:after{border-left-color:var(--blue)}.parcel{position:absolute;top:-4px;left:0;width:10px;height:10px;border:2px solid var(--paper);border-radius:50%;background:var(--blue);display:none}.flow.active .parcel{display:block;animation:travel 1.7s ease-in-out infinite}.flow.reverse .parcel{animation-direction:reverse}@keyframes travel{from{left:0}to{left:calc(100% - 10px)}}.flow.inactive{opacity:.35}.main-data{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;min-height:37px;margin-top:13px}.chip{font-size:13px;padding:5px 11px;border:1px solid #c7d7f7;border-radius:6px;background:var(--soft);color:#23477f;overflow-wrap:anywhere}.chip code{font-family:ui-monospace,Consolas,monospace;font-size:12px}.takeaway{margin:16px auto 0;text-align:center;max-width:780px;padding:12px;background:var(--paper);border-radius:8px;font-size:15px;min-height:49px}.controls{display:flex;align-items:center;justify-content:center;gap:15px;margin-top:24px}.btn{border:1px solid var(--line);border-radius:7px;background:var(--paper);color:var(--ink);padding:8px 15px}.btn.primary{background:var(--blue);border-color:var(--blue);color:white;min-width:155px}.btn:disabled{opacity:.4;cursor:default}.dots{display:flex;justify-content:center;gap:12px;margin-top:18px}.dot{width:24px;height:24px;border:0;border-radius:50%;background:transparent;position:relative;padding:0}.dot:after{content:'';position:absolute;top:8px;left:8px;width:8px;height:8px;border-radius:50%;background:#c3ccda}.dot[aria-current=step]:after{background:var(--blue);transform:scale(1.4)}details{border-top:1px solid var(--line);margin-top:27px;padding-top:15px}summary{cursor:pointer;color:var(--muted);font-size:14px}.detail-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;padding-top:13px}h3{font-size:14px;margin:0 0 8px}.variable{padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}.variable code{font-weight:600;color:var(--blue);font-size:12px;overflow-wrap:anywhere}.variable p{margin:3px 0;color:var(--muted)}.variable .value{color:var(--ink);white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.6 ui-monospace,Consolas,monospace}pre{margin:0;background:#1a273b;color:#e8effa;border-radius:7px;padding:13px;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.8 ui-monospace,Consolas,monospace}.source{font-size:12px;color:var(--muted);margin:7px 0}footer{font-size:12px;color:var(--muted);margin-top:18px}a{color:var(--blue)}@media(max-width:700px){.page{padding:22px 14px}h1{font-size:21px}header{display:block}.demo{margin-top:5px}h2{font-size:21px}.scene{grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr);gap:0;min-height:0}.actor-platform{display:none}.flow-platform-vm{display:none}.picture{height:151px}.flow-label{font-size:11px;white-space:normal;width:42px}.monitor{height:133px}.actor-label{font-size:14px}.actor-desc{font-size:12px}.detail-grid{grid-template-columns:1fr}.phase{font-size:13px}.phase span{margin-right:3px}.controls{gap:9px}.btn{font-size:14px;padding:8px 11px}.btn.primary{min-width:145px}.subtitle{min-height:48px}.takeaway{font-size:14px}.main-data{margin-top:18px}}@media(prefers-reduced-motion:reduce){.parcel{animation:none!important;left:45%}.sandbox{transition:none}}
+</style>
+<style>
+#detail .detail-grid{display:block}#detail .guide-help{font-size:14px;color:var(--muted);margin:0 0 10px}#detail .guide-tabs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:15px}#detail .guide-tab{border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);padding:6px 10px;font:12px/1.6 ui-monospace,Consolas,monospace;overflow-wrap:anywhere}#detail .guide-tab[aria-pressed=true]{background:var(--soft);color:var(--blue);border-color:#9bb8ef}#detail .guide-card{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:17px}#detail .plain{font-size:17px;color:var(--ink);margin:0 0 12px;font-weight:600}#detail .flow-line{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:9px 0 13px;font-size:13px}#detail .endpoint{background:var(--soft);border-radius:5px;padding:5px 9px;color:#23477f}#detail .flow-arrow{color:var(--blue)}#detail .formal{font-size:12px;color:var(--muted);margin:8px 0}#detail .sample{white-space:pre-wrap;overflow-wrap:anywhere;background:#f2f5f9;color:var(--ink);margin:8px 0 0;font:12px/1.8 ui-monospace,Consolas,monospace;padding:10px;border-radius:5px}#detail .field{border-top:1px solid var(--line);padding:12px 0 3px;margin-top:10px}#detail .field-name{font:600 12px/1.7 ui-monospace,Consolas,monospace;color:var(--blue);overflow-wrap:anywhere}#detail .field-plain{margin:4px 0;font-size:14px;color:var(--ink)}#detail .field-flow{font-size:12px;color:var(--muted);margin:4px 0;overflow-wrap:anywhere}#detail .code-section{margin-top:19px}#detail .call-list{margin-top:16px}#detail .call-list details{margin-top:10px;padding-top:10px}#detail .call-list summary{color:var(--blue)}#detail .call-purpose{font-size:14px;color:var(--ink);margin:9px 0}#detail .parameter{margin:9px 0;padding:8px 10px;background:#f2f5f9;border-radius:5px}#detail .parameter p{font-size:13px;margin:3px 0;color:var(--ink)}#detail .parameter .field-flow{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body><div class="page">
+<header><h1>跟着一条命令认识 SPACE</h1><span class="demo">模拟演示 · 不连接真实服务</span></header>
+<p class="intro">任务只有一个：让一台隔离的小电脑说一句「Hello from SPACE」，然后把它删除。</p>
+<div class="phases" aria-label="三个阶段"><button class="phase" data-phase="0"><span>①</span>准备环境</button><button class="phase" data-phase="1"><span>②</span>执行命令</button><button class="phase" data-phase="2"><span>③</span>收拾环境</button></div>
+<section class="headline" aria-live="polite"><div class="count" id="count"></div><h2 id="title"></h2><p class="subtitle" id="subtitle"></p></section>
+<section class="scene" aria-label="客户端通过 SPACE 与沙箱交换请求和结果">
+<div class="actor"><div class="picture"><div class="monitor"><div class="screen-title">你的客户端 · Python 脚本</div><div class="screen-line" id="client-line"></div><div class="client-note" id="client-note"></div></div></div><div class="actor-label">你 / Agent 的客户端</div><p class="actor-desc" id="client-desc"></p></div>
+<div class="flow" id="flow-client"><div class="flow-label" id="flow-client-label"></div><div class="track"><span class="parcel"></span></div></div>
+<div class="actor actor-platform"><div class="picture"><div class="platform" id="platform"><div class="platform-name">SPACE</div><div class="platform-role" id="platform-role"></div></div></div><div class="actor-label">管理与连接服务</div><p class="actor-desc" id="platform-desc"></p></div>
+<div class="flow flow-platform-vm" id="flow-vm"><div class="flow-label" id="flow-vm-label"></div><div class="track"><span class="parcel"></span></div></div>
+<div class="actor"><div class="picture"><div class="monitor sandbox" id="sandbox"><div class="screen-title" id="vm-title"></div><div class="vm-label" id="vm-system"></div><div class="process" id="process"></div></div></div><div class="actor-label">沙箱：隔离的小电脑</div><p class="actor-desc" id="vm-desc"></p></div>
+</section>
+<div class="main-data" id="chips"></div><div class="takeaway" id="takeaway"></div>
+<div class="controls"><button class="btn" id="prev">← 上一步</button><button class="btn primary" id="next"></button></div><div class="dots" id="dots" aria-label="选择演示步骤"></div>
+<details id="detail"><summary>展开：本步的变量和代码</summary><div class="detail-grid"><div><h3>先选一个变量，看看谁把什么交给了谁</h3><p class="guide-help">先读一句话解释和箭头，再看字段；“客户端内部”表示没有通过网络发送。图中的变量名、字段名和函数参数会分开说明。</p><div class="guide-tabs" id="guide-tabs" aria-label="选择本步变量"></div><div id="variables" aria-live="polite"></div></div><div class="code-section"><h3>对应代码：对照上面选中的变量阅读</h3><pre id="code"></pre><p class="source" id="source"></p><div class="call-list" id="calls"></div></div></div></details>
+<footer>演示官方示例的成功路径；编号与令牌为占位值。后台服务链路与就绪检查已合并。小屏幕合并显示 SPACE 中转路径。<br>源码：<a href="../SPACE-main/examples/first_sandbox.py">../SPACE-main/examples/first_sandbox.py</a>。执行出错时原示例停止并保留记录，不会自动进入删除步骤。</footer>
+</div>
+<script>
+'use strict';
+const slides=[
+ {phase:0,title:'先要一台小电脑',sub:'客户端向 SPACE 提交申请：按这个模板，帮我创建一个沙箱。',client:'申请创建沙箱',note:'带上管理凭证',clientDesc:'发出请求',role:'控制面 · 接受创建请求',platformDesc:'记录申请，安排创建',vm:'empty',vmTitle:'还没有沙箱',system:'',process:'等待创建',vmDesc:'命令还无处执行',flowA:'申请创建',flowB:'安排创建',direction:'out',chips:[['template','seed:latest'],['runtime','fc']],take:'模板像预装系统的母盘；这一步只是申请，还要等待环境准备好。',source:'configuration() → main() → create_sandbox() → mutation()',code:String.raw`config = configuration()
+directory = Path(tempfile.mkdtemp(prefix="space-first-sandbox-"))
+# main() 初始化 state，并保存到本地。
+body = {"template": config["template"], "runtime": "fc"}
+result = mutation(config, directory, state, "create", "POST",
+                  "/v1/sandboxes", body)`},
+ {phase:0,title:'小电脑准备好了',sub:'SPACE 返回编号。客户端等待创建成功、沙箱运行、执行服务可访问。',client:'记下沙箱编号',note:'以后用编号找到它',clientDesc:'保存 ID，检查就绪',role:'控制面 + 后台 Worker',platformDesc:'创建 microVM，确认可用',vm:'alive',vmTitle:'沙箱 sbx_…001',system:'Linux · 独立可写文件系统',process:'还没有任务进程',vmDesc:'运行中，等待命令',flowA:'返回编号',flowB:'环境就绪',direction:'in',chips:[['sandbox_id','sbx_…001'],['operation_id','op_…002']],take:'沙箱是持续存在的环境。环境已运行，并不代表你的命令已经运行。',source:'create_sandbox() / remember_ids() / wait_for_state()',code:String.raw`remember_ids(directory, state, result, [
+    ("sandbox_id", "sandbox_id", "sbx_"),
+    ("operation_id", "operation_id", "op_"),
+])
+wait_for_state(config,
+    f"/v1/operations/{state['operation_id']}", "succeeded")
+wait_for_state(config,
+    f"/v1/sandboxes/{state['sandbox_id']}", "running")
+# 随后读取 processes?limit=1，检查执行服务可访问。`},
+ {phase:1,title:'把要做的事交给 SPACE',sub:'现在指定：在这台沙箱里，运行一条打印文字的命令。',client:'printf "Hello from SPACE\\n"',note:'提交 COMMAND 参数',clientDesc:'告诉平台要执行什么',role:'控制面 · 创建命令会话',platformDesc:'接收命令，准备回执',vm:'alive',vmTitle:'沙箱 sbx_…001',system:'Linux · 文件系统保持原样',process:'任务进程尚未启动',vmDesc:'仍在等待',flowA:'提交命令',flowB:'尚未启动',direction:'out',quietB:true,chips:[['COMMAND','要执行的内容'],['sandbox_id','在哪台沙箱执行']],take:'提交命令会先创建“命令会话”。仅提交这份申请，程序还没启动。',source:'run_command() / mutation()',code:String.raw`sandbox_id = require_id(state, "sandbox_id", "sbx_")
+command = mutation(config, directory, state, "command", "POST",
+                   f"/v1/sandboxes/{sandbox_id}/commands", COMMAND)`},
+ {phase:1,title:'拿到连接这次任务的通行证',sub:'SPACE 返回：会话编号、进程编号，以及连接地址和连接令牌。',client:'拿到会话信息',note:'command → attach → token',clientDesc:'准备连接任务',role:'控制面 · 返回会话回执',platformDesc:'发放本次会话连接信息',vm:'alive',vmTitle:'沙箱 sbx_…001',system:'Linux · 文件系统保持原样',process:'已分配任务编号，未启动',vmDesc:'仍在等待连接',flowA:'回执与令牌',flowB:'仍未启动',direction:'in',quietB:true,chips:[['session_id','连接哪个会话'],['token','凭什么能连接']],take:'ID 像房间号，令牌像通行证：知道编号，不等于有权访问。',source:'run_command()；process_id_for_session() 定义 ID 的派生关系',code:String.raw`remember_ids(directory, state, command, [
+    ("session_id", "session_id", "proc_"),
+    ("process_id", "process_id", "proc_"),
+])
+attach = command["attach"]
+token = attach["token"]`},
+ {phase:1,title:'连接之后，程序才开始跑',sub:'客户端带着连接令牌打开数据通道。SPACE 经后端启动沙箱里的程序。',client:'HTTP.open(request)',note:'真正发送 GET 连接请求',clientDesc:'打开事件流',role:'数据面 · 验证并连接',platformDesc:'转发执行数据',vm:'alive',vmTitle:'沙箱 sbx_…001',system:'Linux · 环境继续存在',process:'▶ sh 进程正在运行',running:true,vmDesc:'执行打印命令',flowA:'连接会话',flowB:'启动进程',direction:'out',chips:[['events_url','连接地址'],['token','连接凭证']],take:'Request(...) 只是准备信封；HTTP.open(...) 才是真正寄出，并触发后端执行流程。',source:'run_command()；原函数还校验地址与令牌，并创建 transcript',code:String.raw`events_path = f"/v1/sessions/{state['session_id']}/events"
+events_url = config["data_plane_url"] + events_path
+# 原函数在这里校验 events_url 与 token。
+request = Request(events_url, headers={
+    "Authorization": f"Bearer {token}",
+    "Accept": "text/event-stream",
+})
+with HTTP.open(request, timeout=STREAM_TIMEOUT) as response:
+    consume_events(response, transcript,
+                   sys.stdout.buffer, sys.stderr.buffer)`},
+ {phase:1,title:'结果回来了，任务结束了',sub:'沙箱里的程序输出文字并以 0 退出。客户端接收、解码，并检查退出结果。',client:'Hello from SPACE',note:'收到退出码 0，确认成功',clientDesc:'显示输出，保存事件',role:'数据面 · 转发输出与结果',platformDesc:'完成后关闭命令流',vm:'alive',vmTitle:'沙箱 sbx_…001',system:'Linux · 文件系统仍然存在',process:'✓ 本次任务进程已退出',vmDesc:'沙箱还在，可以运行下一条命令',flowA:'输出与结果',flowB:'输出与结果',direction:'in',chips:[['frame','一条输出或退出事件'],['completed','True']],take:'进程结束 ≠ 沙箱销毁。小电脑还在，只是这次任务做完了。',source:'event_frames() / consume_events()',code:String.raw`if kind in {"stdout", "stderr"}:
+    output = stdout if kind == "stdout" else stderr
+    output.write(base64.b64decode(frame["data_base64"], validate=True))
+if kind == "process_exited":
+    code = frame.get("exit_code")
+    if type(code) is not int or code != 0:
+        raise RuntimeError(f"Command did not exit successfully: {code!r}")
+    completed = True`},
+ {phase:2,title:'不用这台小电脑了，申请删除',sub:'检查结果后，客户端选择确认删除，并使用管理凭证提交 DELETE。',client:'删除 sbx_…001',note:'使用管理凭证，不是连接令牌',clientDesc:'确认 y，再申请删除',role:'控制面 + 后台 Worker',platformDesc:'安排清理沙箱资源',vm:'off',vmTitle:'沙箱 sbx_…001',system:'正在删除执行环境',process:'任务早已结束',vmDesc:'等待删除操作完成',flowA:'申请删除',flowB:'清理资源',direction:'out',chips:[['sandbox_id','删除哪个环境'],['delete_operation_id','跟踪删除进度']],take:'DELETE 的回执只是“收到申请”。还要等待删除操作 succeeded。',source:'inspect_run() → confirm_delete() → delete_sandbox()',code:String.raw`result = mutation(config, directory, state, "delete", "DELETE",
+                  f"/v1/sandboxes/{sandbox_id}", retry=retry)
+remember_ids(directory, state, result,
+    [("operation_id", "delete_operation_id", "op_")])`},
+ {phase:2,title:'小电脑已删除，留下运行笔记',sub:'删除操作完成。客户端清理本地事件文件，保留 state.json 供追溯。',client:'本次流程完成',note:'本地保留 state.json',clientDesc:'保留请求记录和各类 ID',role:'控制面 · 确认删除完成',platformDesc:'返回操作成功',vm:'empty',vmTitle:'沙箱已删除',system:'',process:'远端环境不再可用',vmDesc:'需要执行新任务时再创建',flowA:'删除成功',flowB:'已释放环境',direction:'in',quietB:true,chips:[['state["deleted"]','True'],['state["transcripts"]','[]']],take:'远端沙箱已销毁；本地 state.json 仍在，里面的 ID 是历史记录。',source:'delete_sandbox() / cleanup_transcripts()',code:String.raw`operation_id = require_id(state, "delete_operation_id", "op_")
+wait_for_state(config, f"/v1/operations/{operation_id}", "succeeded")
+state["deleted"] = True
+save(directory, state)
+# cleanup_transcripts() 校验并删除跟踪的事件文件。
+state["transcripts"] = []
+save(directory, state)`}
+];
+// A guide separates a Python variable, its fields, and its actual data destination.
+const G=(name,plain,formal,from,to,value,fields=[])=>({name,plain,formal,from,to,value,fields});
+const guides={
+config:G('config','客户端的通讯录：去哪里连接，用什么凭证。','dict；configuration() 返回的客户端配置，不是整体发出的网络报文。','客户端环境变量 → configuration()','客户端 api() / run_command()','下列四项各自用于不同位置',[
+ ['api_url','管理请求寄到哪里。','环境变量 SPACE_API_URL','api()：作为请求 URL 的基础地址','http://127.0.0.1:8080','str，管理 API 的 origin'],
+ ['data_plane_url','命令输出通道连到哪里。','环境变量 SPACE_DATA_PLANE_URL','run_command()：拼接 events_url','http://127.0.0.1:8090','str，数据面 origin'],
+ ['token','证明客户端有权管理沙箱的凭证。','环境变量 SPACE_API_TOKEN','api() → 控制面：Authorization 请求头','<管理凭证>','str，管理 API bearer credential；不写入 state'],
+ ['template','告诉平台按哪份初始环境创建沙箱。','SPACE_TEMPLATE 或默认值','body["template"] → 控制面请求体','seed:latest','str，模板引用；name:tag 形式']]),
+directory:G('directory','客户端把运行笔记存在这个文件夹。','pathlib.Path；客户端本地目录路径，不是 guest 的工作目录。','客户端 main() 调用 tempfile.mkdtemp()','客户端 save() / 事件文件创建与清理；不发给 SPACE','/tmp/space-first-sandbox-demo/'),
+state:G('state','客户端自己的运行笔记：记住请求、编号和事件文件。','dict；由客户端维护并写入 state.json，不是远端沙箱的 state 状态字段。','客户端 main() 初始化，后续函数更新','客户端 save() → directory/state.json；不把整个字典发给服务端','值随步骤更新；只有请求所需字段会被单独取出',[
+ ['requests','记住已经提交过什么申请。','mutation() 生成方法、路径、请求体和幂等键','本地 state.json → 后续检查与显式重试','create / command / delete 各有一条记录','dict；键是本地请求名称'],
+ ['sandbox_id / operation_id','记住环境编号和创建申请的进度编号。','创建响应 → remember_ids()','客户端拼接后续 API 路径','sbx_…001 / op_…002','str；编号不是权限凭证'],
+ ['session_id / process_id','记住这次命令的会话与公开进程编号。','命令响应 → remember_ids()','数据面连接路径 / 进程查询路径','到第 4 幕才获得：proc_…003','str；不是数字 PID'],
+ ['transcripts','记住本地有哪些原始事件记录文件。','run_command() 创建文件后追加文件名','cleanup_transcripts() 查找并删除本地文件','第 5 幕产生；第 8 幕清空为 []','list[str]；只存文件名，不存文件对象或连接令牌'],
+ ['delete_operation_id / deleted','记住删除申请，以及是否已经确认删除成功。','删除响应 / 删除操作 succeeded 后的客户端赋值','本地记录与后续删除进度检查','第 7 幕获得编号；第 8 幕 deleted=True','str / bool；不覆盖创建操作编号']]),
+body:G('body','创建申请单：告诉 SPACE 要哪种环境。','dict；create_sandbox() 构造，经 api() 编码为 JSON 请求体。','客户端 create_sandbox()','mutation() → api() → 控制面 POST /v1/sandboxes','{"template":"seed:latest","runtime":"fc"}',[
+ ['template','按 seed 模板的 latest 发布版本创建。','config["template"]','控制面：解析模板引用','seed:latest','str，模板选择参数'],
+ ['runtime','指定用 Firecracker 这一类运行时。','create_sandbox() 中写定的字符串','控制面：选择运行时','fc','str，运行时标识']]),
+createResult:G('result（创建时）','SPACE 的创建回执：告诉你环境编号和申请编号。','dict；api() 用 json.load() 将 HTTP JSON 响应解析成 Python 字典。','控制面 HTTP 响应','客户端 api() → mutation() → create_sandbox() → remember_ids()','{"sandbox_id":"sbx_…001","operation_id":"op_…002"}',[
+ ['sandbox_id','以后用它指定操作哪台沙箱。','服务端创建流程','state["sandbox_id"] → 后续请求路径','sbx_…001','公开资源标识符'],
+ ['operation_id','用它询问创建申请办完了没有。','服务端异步操作记录','state["operation_id"] → 操作查询路径','op_…002','公开操作标识符；不是退出码']]),
+sandboxID:G('sandbox_id','这台隔离小电脑的编号。','str；require_id() 从 state 取出并校验的公开沙箱 ID。','创建响应 → state["sandbox_id"]','客户端命令、查询、删除请求的 URL 路径 → 控制面','sbx_…001'),
+createOp:G('state["operation_id"]','创建申请的查询号：用来追踪创建进度。','str；保存在 state 中的创建操作 ID。','创建响应 result["operation_id"]','GET /v1/operations/{operation_id} → 控制面','op_…002'),
+ready:G('ready','客户端试着访问执行服务，确认它已经能回应。','dict；进程列表请求的响应，代码检查 ready["data"] 是 list。','控制面进程查询路径及后端响应','客户端 create_sandbox()：做就绪检查','{"data":[]}',[
+ ['data','返回的进程列表；空列表也能证明这次接口调用正常返回。','GET /processes?limit=1 的 JSON 响应','客户端 isinstance(..., list) 检查','[]','list；不是命令历史，也不是退出结果'],
+ ['limit=1','这次检查最多取一条进程记录即可。','客户端构造 URL 的查询参数','控制面进程列表接口','1','分页数量参数'],
+ ['timeout=180','本次就绪探测最多等待 180 秒。','create_sandbox() 调用 api() 的参数','客户端 api() 的请求等待控制','180 秒','客户端请求超时；不是 guest 命令执行期限']]),
+COMMAND:G('COMMAND','这次要沙箱做的事：运行哪个程序、给它什么参数、最多跑多久。','dict；模块级命令请求参数，作为创建命令会话的 JSON 请求体。','客户端脚本中的 COMMAND 定义','mutation() → api() → 控制面；启动时再传给 guest 执行流程',JSON.stringify({command:['sh','-c',String.raw`printf "Hello from SPACE\n"`],timeout:'30s'},null,2),[
+ ['command[0] = "sh"','启动一个 shell 程序，让它解释后面的命令。','COMMAND 中的命令数组','控制面保存命令 → guest 启动程序','sh','str，命令数组中的程序名'],
+ ['command[1] = "-c"','告诉 sh：下一个参数是一段需要执行的命令文字。','COMMAND 中的命令数组','启动时交给 guest 中的 sh','-c','str，shell 命令行选项'],
+ ['command[2]','让 shell 输出 Hello from SPACE，并换行。','客户端定义的字符串','guest 中的 sh → printf','printf "Hello from SPACE\\n"','str，shell 要解释的命令字符串；JSON/Python 中的反斜杠是转义表示'],
+ ['timeout','这条命令允许执行多长时间。','COMMAND 的请求字段','控制面 → guest 执行超时逻辑','30s','时长字符串；不是 HTTP 等待超时或令牌有效期']]),
+record:G('state["requests"][name]','客户端先存一张申请副本，避免断网后忘了自己提交过什么。','dict；mutation() 的局部 request 字典保存到 state["requests"] 中。','客户端 mutation()','本地 state.json；其中 body/key 再交给 api() 发出','命令申请 name="command"；删除申请 name="delete"；都是本地记录名',[
+ ['method / path / body','分别记住请求方式、接口路径和请求内容。','mutation() 的调用参数','本地记录；再分别用于 HTTP 方法、URL、JSON 请求体','命令：POST + 命令路径 + COMMAND；删除：DELETE + 沙箱路径 + 无正文','HTTP 请求的三个组成部分'],
+ ['key','给这一次申请一个稳定的重试编号。','mutation() 生成带随机串的幂等键','本地记录 → api() → Idempotency-Key 请求头','first-sandbox-<本次记录名>-<随机串>','str，幂等键；不是访问凭证，也不是会话 ID']]),
+command:G('command','服务端给这次命令的回执，里面写着如何连接它。','dict；创建命令会话的 JSON 响应，区别于大写 COMMAND 输入。','控制面 POST /sandboxes/{id}/commands 的响应','客户端 run_command() → remember_ids() 与 attach 提取','session_id / process_id / sandbox_id / attach',[
+ ['session_id','连接哪一次命令会话。','命令会话创建响应','state["session_id"] → 数据面 events 路径','proc_…003','str，数据面会话标识符'],
+ ['process_id','查询或控制这次命令对应的进程。','命令响应，从会话标识派生','state["process_id"] → 进程 API 路径','proc_…003','str，公开进程 ID；不是 Linux PID'],
+ ['sandbox_id','说明这次命令属于哪台沙箱。','命令会话响应','客户端可用于关联环境','sbx_…001','str，沙箱公开 ID'],
+ ['attach','把连接地址、通行证和有效期装在一起。','控制面为会话生成的连接信息','客户端提取、校验，再准备数据面请求','连接信息字典','dict；不是已经打开的网络连接']]),
+sessionID:G('state["session_id"]','这次连接的房间号：用来找命令会话。','str；remember_ids() 从 command["session_id"] 保存的会话 ID。','控制面响应 → 客户端运行笔记','events_path → 请求 URL → 数据面','proc_…003'),
+processID:G('state["process_id"]','这次任务的公开进程编号。','str；当前命令模型与 session_id 字符串相同，但用途不同，不是数字 PID。','命令会话响应 → remember_ids()','客户端运行记录 → 后续进程查询或控制 API','proc_…003'),
+attach:G('attach','这一包连接信息，告诉客户端“往哪连、凭什么连”。','dict；command["attach"] 中的连接元数据，不是 socket。','控制面响应 → command["attach"]','客户端 run_command()：验证地址、提取 token','连接信息在客户端内存中使用，不写入 state.json',[
+ ['events_url','服务端告诉客户端的事件流入口。','控制面生成的会话连接信息','客户端与预期 events_path / events_url 比较','/v1/sessions/proc_…003/events','str，相对路径或与预期一致的完整 URL'],
+ ['token','连接这次会话时出示的通行证。','服务端生成的会话连接凭证','客户端 token → 数据面 Authorization 请求头','dpt_<连接令牌>','str，session-scoped attachment token；不是管理凭证'],
+ ['expires_at','这张连接通行证什么时候过期。','服务端的连接凭证响应元数据','客户端读取凭证信息；服务端验证有效性','<服务端返回的时间>','时间戳；不是进程执行期限，本示例未单独读取它']]),
+token:G('token','这次命令会话的通行证，连接数据面时要出示。','str；attach["token"] 的局部引用；会话范围的 bearer credential。','控制面 → command["attach"]["token"] → 客户端','Request 的 Authorization 请求头 → 数据面认证','dpt_<连接令牌>；与 config["token"] 的管理凭证不同'),
+eventsPath:G('events_path','只写门牌、不写主机地址的会话入口。','str；客户端构造的数据面事件流相对路径。','state["session_id"] → 客户端 f 字符串','events_url 拼接，以及 attach["events_url"] 目的地址校验','/v1/sessions/proc_…003/events',[
+ ['/v1','使用这套 API 的 v1 路径。','客户端固定路径片段','组成数据面请求 URL','/v1','接口版本路径前缀'],
+ ['sessions/{session_id}','说明要连接哪一个命令会话。','客户端固定片段 + state 中的会话 ID','数据面：定位会话','sessions/proc_…003','资源路径与标识符'],
+ ['events','请求这次会话的输出和退出事件流。','客户端固定路径片段','数据面事件流路由','events','端点名称']]),
+eventsURL:G('events_url','把服务器地址和会话入口拼在一起，得到完整连接地址。','str；HTTP 请求的目标 URL，构造 Request 前进行目的地址检查。','config["data_plane_url"] + events_path','Request(events_url, ...) → HTTP.open() → 数据面','http://127.0.0.1:8090/v1/sessions/proc_…003/events',[
+ ['config["data_plane_url"]','要连接哪一台数据面服务。','客户端 configuration()','完整 URL 的主机和端口部分','http://127.0.0.1:8090','origin；示例本地默认值'],
+ ['events_path','这台服务上的哪一个会话入口。','客户端根据 session_id 构造','完整 URL 的路径部分','/v1/sessions/proc_…003/events','str，相对路径']]),
+request:G('request','客户端准备好的信封：地址和通行证都放好了，但还没寄出。','urllib.request.Request 对象；仅在 HTTP.open() 时发送。区别于 mutation() 中同名的字典变量。','客户端 run_command() 调用 Request(...)','客户端 HTTP.open() 读取该对象并发出 GET → 数据面','GET + events_url + 两个请求头',[
+ ['events_url（第一个参数）','信封要寄到哪里。','客户端拼接并校验的完整 URL','Request 对象 → HTTP 请求目标','http://127.0.0.1:8090/…/events','str，URL 参数'],
+ ['headers（关键字参数）','随请求一起携带的说明和凭证。','客户端构造的字典','HTTP.open() → 数据面的请求头','Authorization / Accept','dict[str, str]'],
+ ['Authorization','证明有权连接这个会话。','token → f"Bearer {token}"','数据面：验证连接凭证','Bearer dpt_<连接令牌>','HTTP 认证头；Bearer 是认证方案名称，不是令牌本身'],
+ ['Accept','告诉服务端：我想持续接收事件流。','客户端写定的格式字符串','数据面：选择响应表示','text/event-stream','HTTP 内容协商请求头；不是命令正文'],
+ ['GET（默认方法）','我要打开这个事件流入口。','未传 data 且未指定 method 时的 Request 默认值','数据面事件流路由','GET','HTTP 方法；这里连接会触发命令启动流程，不能据此假设重提命令安全']]),
+response:G('response','服务端打开的一条回信通道，客户端可以不断从中读消息。','HTTPResponse 类文件响应对象；此处特指数据面 SSE 响应，不是解析后的 JSON 字典。','数据面 HTTP 响应 → HTTP.open()','consume_events() → event_frames() 在客户端逐行读取','SSE 字节行；不是一次返回完毕的普通 JSON',[
+ ['STREAM_TIMEOUT','客户端最多花多少时间等待这次流交换。','脚本常量 STREAM_TIMEOUT = 45','deadline() 限制整体交换，HTTP.open(timeout=...) 限制底层等待','45 秒','客户端超时预算；与 COMMAND.timeout=30s 不同'],
+ ['response 的字节行','网络回信中的原始内容。','数据面转发的事件流','event_frames()：保存原始行并组装事件','data: {…} 后跟空行','bytes；SSE 的文本分帧形式']]),
+transcript:G('transcript','客户端一边收消息，一边把原始内容记到这个本地文件。','二进制可写临时文件对象；NamedTemporaryFile 创建，退出 with 后关闭但保留文件。','客户端 run_command() 在 directory 中打开文件','event_frames() 写入原始字节 → cleanup_transcripts() 后续删除','/tmp/space-first-sandbox-demo/events-demo.sse',[
+ ['prefix / suffix','让文件名以 events- 开头、以 .sse 结尾。','NamedTemporaryFile 的参数','客户端临时文件命名','events- / .sse','str，文件命名前后缀'],
+ ['dir=directory','告诉客户端：把事件记录存在本地哪个文件夹。','main() 创建的 directory','客户端文件系统，不发送给服务端','/tmp/space-first-sandbox-demo/','Path，目录参数'],
+ ['delete=False','文件关掉后先别删，留着排查或后续清理。','NamedTemporaryFile 的参数','客户端临时文件的关闭行为','False','bool；不影响远端沙箱生命周期'],
+ ['state["transcripts"]','运行笔记里只记文件名，方便收尾时找到它。','Path(transcript.name).name','本地 state.json → cleanup_transcripts()','["events-demo.sse"]','list[str]；不是文件内容、令牌或文件对象']]),
+frame:G('frame','从网络消息里拆出来的一条事件：可能是输出，也可能是退出结果。','dict；event_frames() 将 SSE 的 data 字段组合并用 json.loads() 解析。','guest 事件 → 数据面 → response → event_frames()','客户端 consume_events()：按事件类型分流','stdout 帧或 process_exited 帧，逐条处理',[
+ ['type → kind','先看这条消息是在说“有输出”还是“已退出”。','frame.get("type") 得到客户端局部变量 kind','consume_events() 的 if 判断','stdout / stderr / process_exited','str，事件类型；kind 是本地变量，不是额外网络字段'],
+ ['data_base64','输出先用便于传输的文字编码包装，客户端再还原。','guest 输出 → 数据面事件字段','base64.b64decode() → stdout 或 stderr','SGVsbG8gZnJvbSBTUEFDRQo=','str，Base64 编码字节；编码不是加密'],
+ ['exit_code → code','程序最后报成功还是失败；本示例要求值为 0。','退出事件的 exit_code → frame.get()','局部变量 code → 成功判断','0','int，进程退出状态；不是 HTTP 状态码'],
+ ['data / line（解析器局部变量）','先收集原始行，遇到空行再合成一条完整消息。','response 的每条字节行 → line；data 收集 data: 的内容','json.loads() → frame','line: bytes；data: list[bytes]','event_frames() 的局部值；与 ready["data"] 不是同一含义']]),
+stdout:G('stdout / stderr / output','把普通输出放到终端，把诊断信息放到错误输出通道。','stdout、stderr 是二进制写入接口；output 是按事件类型选中的其中一个局部引用。','run_command() 传入 sys.stdout.buffer / sys.stderr.buffer','consume_events() 将解码后的字节写到客户端终端','stdout: Hello from SPACE\n；stderr 可以为空',[
+ ['stdout','显示程序的普通输出。','sys.stdout.buffer 作为 consume_events 的参数','output.write(...) → 客户端终端','Hello from SPACE + 换行','binary writer'],
+ ['stderr','显示错误或诊断信息；出现文字不自动等于执行失败。','sys.stderr.buffer 作为 consume_events 的参数','output.write(...) → 客户端错误输出','本例没有 stderr 事件','binary writer'],
+ ['output','根据 type 临时选中要写到哪个通道。','stdout if kind == "stdout" else stderr','output.write() / output.flush()','stdout 或 stderr 的引用','局部变量，不是新的服务端字段']]),
+completed:G('completed','客户端记下：我已经看到程序正常退出的明确证据。','bool；consume_events() 的局部标志，不会发送给服务端。','初始 False；收到合法的 exit_code=0 退出事件后赋 True','客户端：事件流结束时检查是否能确认成功','False → True；之后事件流还需完整结束'),
+deleteResult:G('result（删除时）','SPACE 的删除回执：给你一个号，稍后用它查删完了没有。','dict；DELETE 响应解析后的局部字典，区别于创建函数中的同名局部变量。','控制面 DELETE /sandboxes/{sandbox_id} 的响应','客户端 delete_sandbox() → remember_ids()','{"operation_id":"op_…004"}',[
+ ['operation_id','删除申请的进度编号，不是创建操作的那个编号。','服务端新建的删除操作记录','state["delete_operation_id"]','op_…004','str，公开异步操作 ID']]),
+deleteOp:G('state["delete_operation_id"] / operation_id','拿着删除查询号，问 SPACE：这台小电脑删完了吗？','str；state 字段持久保存，delete_sandbox() 的局部 operation_id 从该字段取值。','删除响应 → remember_ids() → state','wait_for_state() → GET /v1/operations/{operation_id} → 控制面','op_…004；state["operation_id"] 仍是创建编号 op_…002'),
+deleted:G('state["deleted"]','客户端笔记上盖一个章：已确认远端删除成功。','bool；只有删除操作返回 succeeded 后才写入，非 DELETE 请求的入参。','客户端 wait_for_state() 确认成功后的赋值','save() → 客户端本地 state.json','True；这个值不会作为删除指令发给服务端'),
+transcripts:G('state["transcripts"] / name','按本地笔记里的名单，删除本轮保存的事件文件。','list[str] 与循环局部变量 name；只操作客户端跟踪的文件。','run_command() 记录文件名 → cleanup_transcripts()','directory / name → 客户端文件系统；随后 save() 保存空名单','["events-demo.sse"] → []',[
+ ['name','本轮要清理的一个文件名。','for name in state["transcripts"]','先做文件名检查，再拼接 directory / name','events-demo.sse','str，不接受目录穿越或任意路径'],
+ ['missing_ok=True','如果这个事件文件已经没了，就不因它不存在而报错。','Path.unlink() 的关键字参数','客户端文件删除调用','True','bool；不是忽略所有删除错误'],
+ ['state.json / directory','留着运行笔记和目录，不递归删除整个文件夹。','save() 写入的本地记录','客户端后续检查与追溯','保留请求记录、ID 与 deleted=True','文件和目录；不是沙箱残留资源']])
+};
+const stepGuides=[
+ ['config','body','directory','state'],
+ ['createResult','sandboxID','createOp','ready','state'],
+ ['sandboxID','COMMAND','record','config'],
+ ['command','sessionID','processID','attach','token'],
+ ['eventsPath','eventsURL','request','token','response','transcript'],
+ ['frame','stdout','completed','transcript'],
+ ['sandboxID','deleteResult','deleteOp','config','record'],
+ ['deleteOp','deleted','transcripts','directory','state']
+];
+const calls={
+mutation:{name:'mutation(config, directory, state, name, method, path, body=None, retry=False)',plain:'先保存申请副本，再把其中需要的内容发给控制面；返回服务端回执。',params:[
+ ['config','找到控制面地址与管理凭证。','configuration() → 当前调用者','api()；地址组成 URL，凭证进入认证头'],
+ ['directory','申请副本存到哪个本地文件夹。','main() 创建的 Path','save() → 客户端磁盘，不传给 SPACE'],
+ ['state','往哪本本地笔记里记这次申请。','main() 初始化的 dict','mutation() 更新 → save()；不整份发给服务端'],
+ ['name','本地给申请起的名字：创建叫 "create"，命令叫 "command"，删除叫 "delete"。','调用者传入的 str','state["requests"][name] 的本地索引'],
+ ['method','这次是提交申请还是删除："POST" 或 "DELETE"。','调用者写定的 HTTP 方法','api() → HTTP 请求方法 → 控制面'],
+ ['path','告诉控制面具体要调用哪个接口、操作哪个对象。','调用者按 ID 拼接的 str','config["api_url"] + path → HTTP 请求 URL'],
+ ['body','申请正文：创建传 body，命令传 COMMAND，删除默认 None。','调用者的 dict / None','api() JSON 编码 → HTTP 请求体；None 时无正文'],
+ ['retry','是否允许显式重试已记录的同一请求；默认 False。它不会自动反复重试。','调用者的 bool；确认删除路径传入 True','仅客户端本地检查；重试时复用原方法、路径、正文和幂等键']
+ ]},
+remember:{name:'remember_ids(directory, state, response, fields)',plain:'把服务端回执里的编号抄进本地笔记，检查格式，然后保存。',params:[
+ ['directory / state','编号保存到哪本本地运行笔记。','main() 的本地目录和字典','save() → directory/state.json'],
+ ['response','刚收到的服务端回执，变量名可以是 result 或 command。','控制面 JSON → api() 解析后的 dict','remember_ids() 逐项读取，不重新发送'],
+ ['fields','告诉函数“从哪个字段抄到哪个字段”，以及应有什么前缀。','调用处的 tuple 列表','(source, target, prefix) → state[target] = response[source]'],
+ ['("session_id", "session_id", "proc_")','从回执 session_id 抄到本地同名字段，并检查以 proc_ 开头。','命令响应 response["session_id"]','客户端 state["session_id"]'],
+ ['("operation_id", "delete_operation_id", "op_")','把删除回执的 operation_id 改名保存，避免覆盖创建操作 ID。','删除响应 response["operation_id"]','客户端 state["delete_operation_id"]']
+ ]},
+wait:{name:'wait_for_state(config, path, target)',plain:'客户端反复问进度，直到服务端说“到达目标状态了”，或失败、超时。',params:[
+ ['config','用哪个控制面地址和管理凭证查询。','客户端配置','api() → 控制面 GET 请求'],
+ ['path','这次询问哪个操作或沙箱。','操作 ID / 沙箱 ID → 客户端拼接路径','GET /v1/operations/{id} 或 /v1/sandboxes/{id}'],
+ ['target','等到什么文字才算达到目标。','调用者写定的 str','客户端比较响应的 state："succeeded" 或 "running"'],
+ ['STATE_TIMEOUT','最多花 300 秒轮询这次目标。','脚本常量 300；非函数显式参数','客户端等待截止时间；不会让服务端操作自动取消'],
+ ['result["state"] / 局部 state','这次查询得到的状态文字；与 main() 的 state 运行笔记不是同一变量。','服务端查询响应 → wait_for_state() 的局部值','客户端与 target 比较，决定继续等或结束']
+ ]},
+require:{name:'require_id(state, field, prefix)',plain:'从本地笔记取出一个编号，先确认它存在、格式合理，再交给后续代码。',params:[
+ ['state','从哪本本地笔记取编号。','main() 的运行字典','require_id() 本地读取，不发网络请求'],
+ ['field','取哪个字段，例如 "sandbox_id" 或 "delete_operation_id"。','调用者写定的 str','state.get(field)'],
+ ['prefix','预期编号应以什么开头，例如 "sbx_"、"op_"。','调用者写定的 str','本地字符串格式检查；不是服务端权限验证']
+ ]},
+request:{name:'Request(events_url, headers={...})',plain:'组装请求对象：写好地址和请求头，但此时不联网。',params:[
+ ['events_url','完整的数据面事件入口。','config["data_plane_url"] + events_path','Request 对象的 URL'],
+ ['headers','随请求送出的认证和格式说明。','客户端 dict：Authorization / Accept','HTTP.open() 时变成 HTTP 请求头 → 数据面'],
+ ['Authorization: Bearer {token}','出示本次命令会话的连接凭证。','attach["token"] → 客户端 token','数据面校验会话访问权限'],
+ ['Accept: text/event-stream','希望服务端连续返回 SSE 事件流。','客户端写定的媒体类型','数据面 HTTP 响应的内容协商'],
+ ['GET（默认）','没有 data 也没指定 method，所以默认使用 GET。','Python urllib.request.Request 的规则','HTTP.open() 发出的请求方法']
+ ]},
+open:{name:'HTTP.open(request, timeout=STREAM_TIMEOUT)',plain:'真正把准备好的请求发到数据面，并返回可读取的响应。',params:[
+ ['HTTP','脚本预先建立的客户端，禁用继承的代理和自动重定向。','build_opener(ProxyHandler({}), NoRedirect())','负责发送网络请求；这是调用对象，不是请求参数'],
+ ['request','把哪一个准备好的 HTTP 对象寄出去。','前面构造的 Request','HTTP.open() → 数据面'],
+ ['timeout','底层等待超时为 45 秒；外层 deadline 同时限制整个流交换。','脚本 STREAM_TIMEOUT = 45','客户端等待逻辑；不等于 COMMAND 的 30s 执行期限'],
+ ['as response','把服务端返回的流响应命名为 response。','数据面 HTTP 响应','客户端 consume_events()；as 是 Python with 语法，不是发出的参数']
+ ]},
+consume:{name:'consume_events(response, transcript, stdout, stderr)',plain:'一边读回信，一边记原始内容、显示输出，并确认任务是否正常退出。',params:[
+ ['response','从这条网络响应里读取事件。','HTTP.open() 的返回值','event_frames() → frame；网络方向是数据面 → 客户端'],
+ ['transcript','把原始消息抄进这个本地文件。','run_command() 打开的二进制文件对象','event_frames() → 客户端 .sse 文件'],
+ ['stdout','普通输出写到这里。','run_command() 传 sys.stdout.buffer','解码后的 stdout 字节 → 客户端终端'],
+ ['stderr','诊断或错误输出写到这里。','run_command() 传 sys.stderr.buffer','解码后的 stderr 字节 → 客户端终端错误输出']
+ ]},
+cleanup:{name:'cleanup_transcripts(directory, state)',plain:'根据本地笔记删除本轮事件文件，笔记和文件夹本身继续保留。',params:[
+ ['directory','事件文件所在的客户端本地目录。','main() 创建的 Path','directory / name → 本地文件删除路径'],
+ ['state','从笔记的 transcripts 字段读取文件名单。','本地运行记录','校验文件名 → unlink() → transcripts=[] → save()']
+ ]},
+save:{name:'save(directory, state)',plain:'把客户端内存里的运行笔记写入本地 state.json。',params:[
+ ['directory','文件保存到哪个本地文件夹。','客户端 Path','directory/state.json.tmp → directory/state.json'],
+ ['state','要保存哪本运行笔记。','客户端 dict','json.dumps() → 本地文件；不写 config 或 attach 中的认证令牌']
+ ]}
+};
+const stepCalls=[['mutation','save'],['remember','wait'],['require','mutation'],['remember'],['request','open','consume'],['consume'],['require','mutation','remember'],['require','wait','cleanup','save']];
+let index=0;let selectedGuide=0;const $=id=>document.getElementById(id);
+function setText(id,value){$(id).textContent=value;}
+function element(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;}
+function renderGuide(){
+ const key=stepGuides[index][selectedGuide],g=guides[key],root=$('variables');root.replaceChildren();
+ const card=element('article','guide-card');card.append(element('p','plain',g.plain));
+ const flow=element('div','flow-line');flow.append(element('span','endpoint','来源：'+g.from),element('span','flow-arrow','→'),element('span','endpoint','去向：'+g.to));card.append(flow);
+ card.append(element('p','formal','规范含义：'+g.name+' — '+g.formal));
+ if(g.value){card.append(element('div','source','示意值 / 当前用法：'),element('div','sample',g.value));}
+ if(g.fields.length){card.append(element('h3','','里面每一项是什么意思？'));g.fields.forEach(([name,plain,from,to,value,formal])=>{
+  const field=element('div','field');field.append(element('div','field-name',name),element('p','field-plain',plain),element('p','field-flow','从哪里来：'+from),element('p','field-flow','交给谁、做什么：'+to));
+  if(value)field.append(element('div','sample','示意值：'+value));if(formal)field.append(element('p','formal','规范含义：'+formal));card.append(field);
+ });}
+ root.append(card);$('guide-tabs').querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-pressed',String(i===selectedGuide)));
+}
+function renderGuides(){
+ $('guide-tabs').replaceChildren();stepGuides[index].forEach((key,i)=>{const b=element('button','guide-tab',guides[key].name);b.type='button';b.addEventListener('click',()=>{selectedGuide=i;renderGuide();});$('guide-tabs').append(b);});renderGuide();
+ $('calls').replaceChildren();$('calls').append(element('h3','','函数参数怎么读？（按需展开）'));
+ stepCalls[index].forEach(key=>{const call=calls[key],box=element('details','');box.append(element('summary','',call.name),element('p','call-purpose',call.plain));call.params.forEach(([name,plain,from,to])=>{const row=element('div','parameter');row.append(element('div','field-name',name),element('p','',plain),element('p','field-flow','来源：'+from),element('p','field-flow','去向与用途：'+to));box.append(row);});$('calls').append(box);});
+}
+function render(){
+ const s=slides[index];
+ setText('count',`第 ${index+1} / ${slides.length} 幕`);setText('title',s.title);setText('subtitle',s.sub);setText('client-line',s.client);setText('client-note',s.note);setText('client-desc',s.clientDesc);setText('platform-role',s.role);setText('platform-desc',s.platformDesc);setText('vm-title',s.vmTitle);setText('vm-system',s.system);setText('process',s.process);setText('vm-desc',s.vmDesc);setText('flow-client-label',s.flowA);setText('flow-vm-label',s.flowB);setText('takeaway',s.take);setText('code',s.code);setText('source',s.source);
+ $('sandbox').className='monitor sandbox '+s.vm;$('process').className='process'+(s.running?' running':'');$('platform').className='platform active';
+ $('flow-client').className='flow active'+(s.direction==='in'?' reverse':'');$('flow-vm').className='flow flow-platform-vm '+(s.quietB?'inactive':'active')+(s.direction==='in'?' reverse':'');
+ $('chips').replaceChildren();s.chips.forEach(([key,value])=>{const e=document.createElement('span');e.className='chip';const c=document.createElement('code');c.textContent=key;e.append(c,document.createTextNode('：'+value));$('chips').append(e);});
+ renderGuides();
+ document.querySelectorAll('[data-phase]').forEach(b=>{if(Number(b.dataset.phase)===s.phase)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
+ $('dots').querySelectorAll('button').forEach((b,i)=>{if(i===index)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});
+ $('prev').disabled=index===0;setText('next',index===slides.length-1?'从头再看 ↻':index===1?'接下来：执行命令 →':index===5?'接下来：收拾环境 →':'下一幕 →');
+}
+function go(i){index=Math.max(0,Math.min(slides.length-1,i));selectedGuide=0;$('detail').open=false;render();}
+slides.forEach((s,i)=>{const b=document.createElement('button');b.className='dot';b.type='button';b.setAttribute('aria-label',`第 ${i+1} 幕：${s.title}`);b.addEventListener('click',()=>go(i));$('dots').append(b);});
+document.querySelectorAll('[data-phase]').forEach(b=>b.addEventListener('click',()=>go([0,2,6][Number(b.dataset.phase)])));
+$('prev').addEventListener('click',()=>go(index-1));$('next').addEventListener('click',()=>go(index===slides.length-1?0:index+1));
+render();
+</script>
+</body></html>
